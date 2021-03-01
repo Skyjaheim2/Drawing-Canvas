@@ -1,0 +1,174 @@
+@keyframes moveLeft {
+    from {
+        left: 0%;
+    }
+    to {
+        left: -20%;
+    }
+}
+@keyframes moveRight {
+    from {
+        left: -20%;
+    }
+    to {
+        left: 0%
+    }
+}
+/* TO DARK MODE ANIMATIONS */
+@keyframes bgGoDark {
+    from {
+        background-color: white;
+    }
+    to {
+        background-color: black;
+    }
+}
+@keyframes headingGoDark {
+    from {
+        color: black;
+    }
+    to {
+        color:white;
+    }
+}
+@keyframes sideBarGoDark {
+    from {
+        background-color: white;
+    }
+    to {
+        background-color: rgb(31, 30, 30);
+    }
+}
+@keyframes labelsGoDark {
+    from {
+        background-color: black;
+    }
+    to {
+        background-color: white;
+    }
+}
+@keyframes selectsGoDark {
+    from {
+        background-color: white;
+    }
+    to {
+        background-color: rgb(31, 30, 30);
+    }
+}
+@keyframes buttonGoDark {
+    from {
+        background-color: rgb(0, 105, 217);
+    }
+    to {
+        background-color: darkblue;
+    }
+}
+/* TO LIGHT MODE ANIMATIONS */
+@keyframes bgGoLight {
+    from {
+        background-color: black;
+    }
+    to {
+        background-color: white;
+    }
+}
+@keyframes headingGoLight {
+    from {
+        color: white;
+    }
+    to {
+        color: black;
+    }
+}
+@keyframes sideBarGoLight {
+    from {
+        background-color: rgb(31, 30, 30);
+    }
+    to {
+        background-color: white;
+    }
+}
+@keyframes buttonGoLight {
+    from {
+        background-color: darkblue;
+    }
+    to {
+        background-color: rgb(0, 105, 217);
+    }
+}
+
+#mainHeading {
+    position: fixed;
+    left: 40%;
+    /* margin: 0 auto; */
+    /* width: 100%; */
+    /* position: fixed; */
+    /* text-align: center; */
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 35px;
+    font-weight: 400;
+}
+#options {
+    display: inline-block;
+}
+#colorPicker, #backgroundPicker {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom: 15%;
+    width: 125px;
+}
+#thicknessPicker-Point, #thicknessPicker-Eraser {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom: 10%;
+    width: 125px;
+}
+#hamburgerBtn {
+    position: fixed;
+    left: 0%;
+    height: auto;
+    width: auto;
+    max-width: 40px;
+    max-height: 40px;
+}
+#startOverBtn {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom: 20%;
+    border: none;
+}
+#eraserBtn {
+    cursor: pointer;
+    height: auto;
+    width: auto;
+    max-width: 50px;
+    max-height: 50px;
+    border-radius: 30%;
+    margin-right: 5%;
+}
+#lockScrollBtn {
+    cursor: pointer;
+    height: auto;
+    width: auto;
+    max-width: 40px;
+    max-height: 40px;
+}
+.side-bar-container {
+    position: fixed;
+    top: 7%;
+    background-color: white;
+    padding: 5px;
+    width: 170px;
+    min-height: 360px;
+    border-radius: 10px;
+}
+.inputLabel {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 600;
+    margin-left: 1%;
+}
+.container-1 {
+    height: 100px;
+}
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}
+

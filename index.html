@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <!-- D3 LIBRARY -->
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <!-- JQUERY -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    </head>
+    <body>
+        <div class="container-1">
+            <div id="mainHeading">Sky Alpha Drawing</div>
+            <!-- SIDE BAR -->
+            <img title="Side Bar" id="hamburgerBtn" src="/Img/Hamburger_icon.svg.png">
+            <div class="side-bar-container" data-to_animate="Left">
+                <br>
+                <!-- BACKGROUND PICKER -->
+                <label class="inputLabel">Background Color</label>
+               <select id="backgroundPicker" class="form-control">
+                   <option id="white" value="white">White</option>
+                   <option id="black" value="black">Black</option>
+               </select>
+                <div id="options">
+                    <!-- COLOR PICKER -->
+                    <label class="inputLabel">Pen Color</label>
+                    <select id="colorPicker" class="form-control">
+                        <option id="blackPen" value="black">Black</option>
+                        <option id="whitePen" value="white">White</option>
+                        <option value="red">Red</option>
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                    </select>
+                    <!-- THICKNESS PICKER - Point -->
+                    <label id="thicknessLabel" class="inputLabel">Point Thickness</label>
+                    <select id="thicknessPicker-Point" class="form-control">
+                        <option value=1>1</option>
+                        <option value=2>2</option>
+                        <option value=3 selected>3</option>
+                        <option value=4>4</option>
+                        <option value=5>5</option>
+                    </select>
+                    <!-- THICKNESS PICKER - Eraser -->
+                    <select id="thicknessPicker-Eraser" class="form-control" style="display: none;">
+                        <option value=10>10</option>
+                        <option value=20>20</option>
+                        <option value=30>30</option>
+                        <option value=40>40</option>
+                        <option value=50>50</option>
+                    </select>
+                    <!-- START OVER BUTTON -->
+                    <button id="startOverBtn" class="btn btn-primary">Start Over</button>
+                    <div class="icon-btn-container">
+                        <!-- ERASER BUTTON -->
+                        <img title="Eraser" id="eraserBtn" src="/Img/black_eraser.svg">
+                        <!-- LOCK SCROLL BUTTON -->
+                        <img title="Lock Scroll" id="lockScrollBtn" src="/Img/black_lock_icon(unlock).svg">
+                    </div>
+                </div>
+            </div> 
+            
+        </div>
+        <svg id="draw"></svg>
+    </body>
+    <script src="main.js"></script>
+</html>
