@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Drawing</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,19 +15,24 @@
     </head>
     <body>
         <div class="container-1">
-            <div id="mainHeading">Sky Alpha Drawing</div>
+            <div id="mainHeading"></div>
             <!-- SIDE BAR -->
             <img title="Side Bar" id="hamburgerBtn" src="/Img/Hamburger_icon.svg.png">
             <div class="side-bar-container" data-to_animate="Left">
                 <br>
-                <!-- BACKGROUND PICKER -->
-                <label class="inputLabel">Background Color</label>
-               <select id="backgroundPicker" class="form-control">
-                   <option id="white" value="white">White</option>
-                   <option id="black" value="black">Black</option>
-               </select>
                 <div id="options">
-                    <!-- COLOR PICKER -->
+                    <!-- BACKGROUND PICKER -->
+                    <label class="inputLabel">Background Color</label>
+                    <select id="backgroundPicker" class="form-control">
+                        <option id="white" value="white">White</option>
+                        <option id="black" value="black">Black</option>
+                    </select>
+                    <!-- CANVAS SIZE -->
+                    <label class="inputLabel">Canvas Size</label>
+                    <input id="canvasSizeInput" class="form-control">
+                    <div class="canvas-size-constraint-text">Min: 2000px</div>
+                    <div class="canvas-size-constraint-text">Max: 5000px</div>
+                    <!-- PEN COLOR PICKER -->
                     <label class="inputLabel">Pen Color</label>
                     <select id="colorPicker" class="form-control">
                         <option id="blackPen" value="black">Black</option>
@@ -54,11 +60,16 @@
                     </select>
                     <!-- START OVER BUTTON -->
                     <button id="startOverBtn" class="btn btn-primary">Start Over</button>
+                    <!-- ICON CONTAINER -->
                     <div class="icon-btn-container">
                         <!-- ERASER BUTTON -->
                         <img title="Eraser" id="eraserBtn" src="/Img/black_eraser.svg">
                         <!-- LOCK SCROLL BUTTON -->
                         <img title="Lock Scroll" id="lockScrollBtn" src="/Img/black_lock_icon(unlock).svg">
+                        <!-- MOVE BUTTON -->
+                        <img title="Move" id="moveBtn" src="/Img/move(black).svg">
+                        <!-- SELECT BUTTON -->
+                        <img title="Select" id="selectBtn" src="/Img/select-rectangle(black).svg">
                     </div>
                 </div>
             </div> 

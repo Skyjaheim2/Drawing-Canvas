@@ -63,6 +63,16 @@
         background-color: darkblue;
     }
 }
+@keyframes inputGoDark {
+    from {
+        background-color: white;
+        color: black;
+    }
+    to {
+        background-color: rgb(31, 30, 30);
+        color: white;
+    }
+}
 /* TO LIGHT MODE ANIMATIONS */
 @keyframes bgGoLight {
     from {
@@ -96,14 +106,54 @@
         background-color: rgb(0, 105, 217);
     }
 }
+@keyframes inputGoLight {
+    from {
+        background-color: rgb(31, 30, 30);
+        color: white;
+    }
+    to {
+        background-color: white;
+        color: black;
+    }
+}
+/* BUTTON ANIMATIONS */
+@keyframes buttonSelected-Light {
+    0% {
+        border: 3px solid white;
+    }
+    50% {
+        border: 3px solid blue;
+    }
+    100% {
+        border: 3px solid white;
+    }
+}
+@keyframes buttonSelected-Dark {
+    0% {
+        border: 3px solid rgb(31, 30, 30);
+    }
+    50% {
+        border: 3px solid blue;
+    }
+    100% {
+        border: 3px solid rgb(31, 30, 30);
+    }
+}
+@keyframes move {
+    from {
+        left: 40%;
+    }
+    to {
+        left: 80%
+    }
+}
 
 #mainHeading {
+    /* animation-name: move;
+    animation-duration: 2s;
+    animation-fill-mode: forwards; */
     position: fixed;
     left: 40%;
-    /* margin: 0 auto; */
-    /* width: 100%; */
-    /* position: fixed; */
-    /* text-align: center; */
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 35px;
     font-weight: 400;
@@ -115,6 +165,17 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin-bottom: 15%;
     width: 125px;
+}
+#canvasSizeInput {
+    margin-bottom: 15%;
+    background-color: rgb(31, 30, 30);
+}
+.canvas-size-constraint-text {
+    display: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: orange;
+    /* margin-bottom: 5%; */
+
 }
 #thicknessPicker-Point, #thicknessPicker-Eraser {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -135,15 +196,42 @@
     border: none;
 }
 #eraserBtn {
+    animation-delay: 0.1s;
+    animation-duration: 2.5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
     cursor: pointer;
     height: auto;
     width: auto;
     max-width: 50px;
     max-height: 50px;
     border-radius: 30%;
-    margin-right: 5%;
+    margin-right: 10%;
+    margin-bottom: 10%;
+}
+#lockScrollBtn, #moveBtn {
+    cursor: pointer;
+    height: auto;
+    width: auto;
+    max-width: 40px;
+    max-height: 40px;
 }
 #lockScrollBtn {
+    margin-bottom: 10%;
+}
+#moveBtn {
+    animation-delay: 0.1s;
+    animation-duration: 2.5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    margin-right: 20%;
+    border-radius: 35%;
+}
+#selectBtn  {
+    animation-delay: 0.1s;
+    animation-duration: 2.5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
     cursor: pointer;
     height: auto;
     width: auto;
@@ -155,8 +243,7 @@
     top: 7%;
     background-color: white;
     padding: 5px;
-    width: 170px;
-    min-height: 360px;
+    width: 155px;
     border-radius: 10px;
 }
 .inputLabel {
@@ -165,7 +252,9 @@
     margin-left: 1%;
 }
 .container-1 {
-    height: 100px;
+    /* position: fixed;
+    background-color: rgb(31, 30, 30);
+    height: 100px; */
 }
 .stop-scrolling {
     height: 100%;

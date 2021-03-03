@@ -2,6 +2,9 @@
  let draw = false
  let erase = false
  let SCROLL_LOCKED = false
+ let MOVING = false
+ let SELECTING = false
+ let DISABLE_DRAWING = false
 
  // elements
  let points = []
@@ -10,6 +13,7 @@
 
  document.addEventListener('DOMContentLoaded', () => {
      loadSettings()
+     disableScroll()
      render()
  })
 
@@ -65,100 +69,104 @@
  function draw_point(x, y, connect, removePoint) {
      const color = document.querySelector('#colorPicker').value;
      const thickness = document.querySelector('#thicknessPicker-Point').value;
-     
-     if (!(removePoint)) {
-         if (connect) {
-             const last_point = points[points.length - 1];
-             const line = svg.append('line')
-                             .attr('x1', last_point.attr('cx'))
-                             .attr('y1', last_point.attr('cy'))
-                             .attr('x2', x)
-                             .attr('y2', y)
-                             .attr('stroke-width', thickness * 2)
-                             .style('stroke', color);
-             lines.push(line);
-         }
 
-         const point = svg.append('circle')
-                         .attr('cx', x)
-                         .attr('cy', y)
-                         .attr('r', thickness)
-                         .style('fill', color);
+     if (!DISABLE_DRAWING) {
+         if (!(removePoint)) {
+             if (connect) {
+                 const last_point = points[points.length - 1];
+                 const line = svg.append('line')
+                     .attr('x1', last_point.attr('cx'))
+                     .attr('y1', last_point.attr('cy'))
+                     .attr('x2', x)
+                     .attr('y2', y)
+                     .attr('stroke-width', thickness * 2)
+                     .style('stroke', color);
+                 lines.push(line);
+             }
+
+             const point = svg.append('circle')
+                 .attr('cx', x)
+                 .attr('cy', y)
+                 .attr('r', thickness)
+                 .style('fill', color);
              points.push(point);
-     }
-     else {
-         let coords = d3.mouse(document.querySelector('#draw'))
-
-         eraserCircle.transition()
-                         .duration(1)
-                         .attr('cx', coords[0])
-                         .attr('cy', coords[1])
-         
-         let mouse_x = new Set([ coords[0] ])
-         let mouse_y = new Set([ coords[1]  ])
-
-
-         // Get a range of coords around the exact position of the mouse (-5, 5)
-         let eraseSize = document.querySelector('#thicknessPicker-Eraser').value
-         for (let i = -eraseSize; i <= eraseSize; i ++) {
-             mouse_x.add(coords[0] + i)
-             mouse_y.add(coords[1] + i)
          }
-         
-         // Remove points
-         points.forEach(point => {
-             let point_x = parseInt(point.attr('cx'))
-             let point_y = parseInt(point.attr('cy'))
+         else {
+             let coords = d3.mouse(document.querySelector('#draw'))
 
-             if (mouse_x.has(point_x) && mouse_y.has(point_y)) {                        
-                 // Remove point from points array
-                 let indexOfPointToRemove = points.indexOf(point)
-                 points.splice(indexOfPointToRemove, 1)
-                 // Remove point from UI
-                 point.remove()
+             eraserCircle.transition()
+                 .duration(1)
+                 .attr('cx', coords[0])
+                 .attr('cy', coords[1])
+
+             let mouse_x = new Set([coords[0]])
+             let mouse_y = new Set([coords[1]])
+
+
+             // Get a range of coords around the exact position of the mouse (-5, 5)
+             let eraseSize = document.querySelector('#thicknessPicker-Eraser').value
+             for (let i = -eraseSize; i <= eraseSize; i++) {
+                 mouse_x.add(coords[0] + i)
+                 mouse_y.add(coords[1] + i)
              }
-             // console.log(`point cx: ${point.attr('cx')} point cy: ${point.attr('cy')}\nmouse cx: ${mouse_x} mouse cy: ${mouse_y}`)
-         })
 
-         mouse_x = castSetToArray(mouse_x)
-         mouse_y = castSetToArray(mouse_y)
+             // Remove points
+             points.forEach(point => {
+                 let point_x = parseInt(point.attr('cx'))
+                 let point_y = parseInt(point.attr('cy'))
 
-         // Remove lines
-         lines.forEach(line => {
-             let removeLine = false
-
-             let line_x1 = parseInt(line.attr('x1'))
-             let line_x2 = parseInt(line.attr('x2'))
-             
-             let line_y1 = parseInt(line.attr('y1'))
-             let line_y2 = parseInt(line.attr('y2'))
-
-
-             let Line_X1 = min([line_x1, line_x2])
-             let Line_X2 = max([line_x1, line_x2])
-
-             let Line_Y1 = min([line_y1, line_y2])
-             let Line_Y2 = max([line_y1, line_y2])
-             
-             // console.log(`line x1: ${line_x1}\nline x2: ${line_x2}\n\nline y1: ${line_y1}\nline y2: ${line_y2}`)
-
-             // mouse_x and mouse_y has the same size so either one would word for i <
-             for (let i = 0; i < mouse_x.length; i++) {
-                 // Check if mouse_x and mouse_y is between the start and end of the line
-                 if ( (mouse_x[i] >= Line_X1 && mouse_x[i] <= Line_X2) && ( (mouse_y[i] >= Line_Y1 && mouse_y[i] <= Line_Y2) ) ) {
-                      // Remove line from UI
-                     line.remove()   
-                     removeLine = true       
+                 if (mouse_x.has(point_x) && mouse_y.has(point_y)) {
+                     // Remove point from points array
+                     let indexOfPointToRemove = points.indexOf(point)
+                     points.splice(indexOfPointToRemove, 1)
+                     // Remove point from UI
+                     point.remove()
                  }
-             }
-             if (removeLine) {
-                 //  Remove line from lines array
-                 let indexOfLineToRemove = lines.indexOf(line)
-                 lines.splice(indexOfLineToRemove, 1)
-                 removeLine = false
-             }
-         })
+                 // console.log(`point cx: ${point.attr('cx')} point cy: ${point.attr('cy')}\nmouse cx: ${mouse_x} mouse cy: ${mouse_y}`)
+             })
+
+             mouse_x = castSetToArray(mouse_x)
+             mouse_y = castSetToArray(mouse_y)
+
+             // Remove lines
+             lines.forEach(line => {
+                 let removeLine = false
+
+                 let line_x1 = parseInt(line.attr('x1'))
+                 let line_x2 = parseInt(line.attr('x2'))
+
+                 let line_y1 = parseInt(line.attr('y1'))
+                 let line_y2 = parseInt(line.attr('y2'))
+
+
+                 let Line_X1 = min([line_x1, line_x2])
+                 let Line_X2 = max([line_x1, line_x2])
+
+                 let Line_Y1 = min([line_y1, line_y2])
+                 let Line_Y2 = max([line_y1, line_y2])
+
+                 // console.log(`line x1: ${line_x1}\nline x2: ${line_x2}\n\nline y1: ${line_y1}\nline y2: ${line_y2}`)
+
+                 // mouse_x and mouse_y has the same size so either one would word for i <
+                 for (let i = 0; i < mouse_x.length; i++) {
+                     // Check if mouse_x and mouse_y is between the start and end of the line
+                     if ((mouse_x[i] >= Line_X1 && mouse_x[i] <= Line_X2) && ((mouse_y[i] >= Line_Y1 && mouse_y[i] <= Line_Y2))) {
+                         // Remove line from UI
+                         line.remove()
+                         removeLine = true
+                     }
+                 }
+                 if (removeLine) {
+                     //  Remove line from lines array
+                     let indexOfLineToRemove = lines.indexOf(line)
+                     lines.splice(indexOfLineToRemove, 1)
+                     removeLine = false
+                 }
+             })
+         }
+
      }
+     
  }
 
  // OPEN AND CLOSE SIDE BAR
@@ -191,6 +199,7 @@
      let pointThicknessSelect = document.querySelector('#thicknessPicker-Point')
      let eraserBtn = document.querySelector('#eraserBtn')
      let eraserThicknessSelect = document.querySelector('#thicknessPicker-Eraser')
+     let bgColor = JSON.parse(localStorage.getItem('userSettings'))['bgColor']
      
 
      if (erase === false) {
@@ -207,7 +216,15 @@
                                                 .attr('r', document.querySelector('#thicknessPicker-Eraser').value)
                                                 .style('fill', 'grey')
                                                 .style('opacity', 0.5)
-         eraserBtn.style.border = '2px solid blue'
+
+        // Start animation
+        if (bgColor === 'white')
+            eraserBtn.style.animationName = 'buttonSelected-Light'
+        else if (bgColor === 'black')
+            eraserBtn.style.animationName = 'buttonSelected-Dark'
+
+
+         // Change states
          erase = true
          draw = true
      }
@@ -221,6 +238,8 @@
          // Remove the eraser circle
          eraserCircle.remove()
          eraserBtn.style.border = ''
+         // End animation
+         eraserBtn.style.animationName = ''
          // Change states
          erase = false
          draw = false
@@ -231,45 +250,46 @@
  document.querySelector('#thicknessPicker-Eraser').onchange = function() {
      eraserCircle.style('r', this.value)
  }
-     
+
  // LOCK SCROLL BUTTON
  document.querySelector('#lockScrollBtn').addEventListener('click', () => {
-     let body = document.querySelector('body')
-     let lockScrollBtn = document.querySelector('#lockScrollBtn')
-     let bgColor = JSON.parse(localStorage.getItem('userSettings'))['bgColor']
-     
+    let body = document.querySelector('body')
      if (body.className === '') {
-         SCROLL_LOCKED = true
          // DISABLE SCROLL
-         body.className = 'stop-scrolling'
-         // For mobile
-         $('body').bind('touchmove', function(e){e.preventDefault()})
-
-         // Change icon
-         if (bgColor === 'white') {
-             lockScrollBtn.src = '/Img/black_lock_icon(lock).svg'
-         }
-         else if (bgColor === 'black') {
-             lockScrollBtn.src = '/Img/white_lock_icon(lock).svg'
-         }
-         
+         disableScroll()    
      }
      else {
-         SCROLL_LOCKED = false
-         body.className = ''
-         // For mobile
-         $('body').unbind('touchmove')
-
-         // Change icon
-         if (bgColor === 'white') {
-             lockScrollBtn.src = '/Img/black_lock_icon(unlock).svg'
-         }
-         else if (bgColor === 'black') {
-             lockScrollBtn.src = '/Img/white_lock_icon(unlock).svg'
-         }
+         // ENABLE SCROLL
+         enableScroll()
      }
 
- }) 
+ })
+
+ // MOVE BUTTON
+ document.querySelector('#moveBtn').addEventListener('click', function() {
+    let bgColor = JSON.parse(localStorage.getItem('userSettings'))['bgColor']
+
+    if (MOVING === false) {
+        // Add animation
+        if (bgColor === 'white')
+            this.style.animationName = 'buttonSelected-Light'
+        else if(bgColor === 'black')
+        this.style.animationName = 'buttonSelected-Dark'
+        // Change states
+        MOVING = true
+        DISABLE_DRAWING = true
+        enableScroll()
+
+    }
+    else {
+        // Remove animation
+        this.style.animationName = ''
+        // Change states
+        MOVING = false
+        DISABLE_DRAWING = false
+        disableScroll()
+    }
+ })
 
  // START OVER BUTTON
  document.querySelector('#startOverBtn').onclick = () => {
@@ -279,7 +299,7 @@
              lines[i].remove();
          points = [];
          lines = [];
-     }
+}
 
  // LOAD SETTINGS
  function loadSettings() {
@@ -299,9 +319,12 @@
      let sideBarContainer = document.querySelector('.side-bar-container')
      let colorPickerSelect = document.querySelector('#colorPicker')
      let pointThicknessSelect = document.querySelector('#thicknessPicker-Point')
+     let canvasSizeInput = document.querySelector('#canvasSizeInput')
      let hamburgerBtn = document.querySelector('#hamburgerBtn')
      let startOverBtn = document.querySelector('#startOverBtn')
      let eraserBtn = document.querySelector('#eraserBtn')
+     let moveBtn = document.querySelector('#moveBtn')
+     let selectBtn = document.querySelector('#selectBtn')
      let lockScrollBtn = document.querySelector('#lockScrollBtn')
      let whitePen = document.querySelector('#whitePen')
      let blackPen = document.querySelector('#blackPen')
@@ -327,9 +350,16 @@
              select.style.borderColor = ''
              select.style.color = 'black'
          })
+         // Change the color of the input fields
+         canvasSizeInput.style.backgroundColor = 'white'
+         canvasSizeInput.style.borderColor = ''
+         canvasSizeInput.style.color = 'black'
+
          // Change the Button icons
          hamburgerBtn.src = '/Img/Hamburger_icon.svg.png'
          eraserBtn.src = '/Img/black_eraser.svg'
+         moveBtn.src = '/Img/move(black).svg'
+         selectBtn.src = '/Img/select-rectangle(black).svg'
          if (SCROLL_LOCKED)
              lockScrollBtn.src = '/Img/black_lock_icon(lock).svg'
          else
@@ -354,15 +384,22 @@
          document.querySelectorAll('.inputLabel').forEach(label => {
              label.style.color = 'white'
          })
+         // Change the color of the select boxes
          let allSelects = [document.querySelector('#backgroundPicker'), document.querySelector('#colorPicker'), document.querySelector('#thicknessPicker-Point'), document.querySelector('#thicknessPicker-Eraser')]
          allSelects.forEach(select => {
              select.style.backgroundColor = 'rgb(31, 30, 30)'
              select.style.borderColor = 'grey'
              select.style.color = 'white'
          })
+         // Change the color of the input fields
+         canvasSizeInput.style.backgroundColor = 'rgb(31, 30, 30)'
+         canvasSizeInput.style.borderColor = 'grey'
+         canvasSizeInput.style.color = 'white'
          // Change button icons
          hamburgerBtn.src = '/Img/white_hamburger_icon.jpg'
          eraserBtn.src = '/Img/white_eraser.svg'
+         moveBtn.src = '/Img/move(white).svg'
+         selectBtn.src = '/Img/select-rectangle(white).svg'
          if (SCROLL_LOCKED)
              lockScrollBtn.src = '/Img/white_lock_icon(lock).svg'
          else
@@ -386,8 +423,15 @@
         'blue': 2,
         'green': 3,
     }
-    colorPickerSelect.options[colorPickerIndex[userSettings['penColor']]].selected = true
 
+    /* 
+    If the stored penColor is not black or white then we reload the stored penColor
+    If the stored penColor is black or white we do nothing because that is handled
+    in the theme section just above
+    */
+    if (!(userSettings['penColor'] === 'white' || userSettings['penColor'] === 'black')) {
+        colorPickerSelect.options[colorPickerIndex[userSettings['penColor']]+1].selected = true
+    }
      // Load point thickness
     pointThicknessSelect.options[userSettings['pointThickness']-1].selected = true
 
@@ -422,27 +466,104 @@
              }
          }
      })
-
-     // Remove black of white color pen
+     
      let whitePen = document.querySelector('#whitePen')
      let blackPen = document.querySelector('#blackPen')
-     if (this.value === 'white') {
-        whitePen.style.display = 'none'
-        blackPen.style.display = ''
-     }
-     else if(this.value === 'black') {
-        blackPen.style.display = 'none'
-        whitePen.style.display = ''
-
-     }
 
      // Change bg color
      let userSettings = JSON.parse(localStorage.getItem('userSettings'))
      userSettings['bgColor'] = this.value
      // Add change to storage
      localStorage.setItem('userSettings', JSON.stringify(userSettings))
+
+     // Remove black of white color pen
+     if (this.value === 'white') {
+        whitePen.style.display = 'none'
+        blackPen.selected = true
+        blackPen.style.display = ''
+     }
+     else if(this.value === 'black') {
+        blackPen.style.display = 'none'
+        whitePen.selected = true
+        whitePen.style.display = ''
+     }
+     // Change the color of the animations
+     if (erase) {
+         if (this.value === 'white') {
+             document.querySelector('#eraserBtn').style.animationName = 'buttonSelected-Light'
+         }
+         else if (this.value === 'black') {
+             document.querySelector('#eraserBtn').style.animationName = 'buttonSelected-Dark'
+         }
+     }
+     if (MOVING) {
+         if (this.value === 'white') {
+             document.querySelector('#moveBtn').style.animationName = 'buttonSelected-Light'
+         }
+         else if (this.value === 'black') {
+             document.querySelector('#moveBtn').style.animationName = 'buttonSelected-Dark'
+         }
+     }
+     if (SELECTING) {
+        //  TODO
+     }
+
+
      loadSettings()
+     
  }
+
+ // Change canvas size
+ let isValidCanvasSize = false
+ // -onfocus
+document.querySelector('#canvasSizeInput').onfocus = function() {
+    let constraintTexts = document.querySelectorAll('.canvas-size-constraint-text')
+
+    if (isNaN(this.value) || parseInt(this.value) < 2000 || parseInt(this.value) > 5000) {
+        this.style.borderColor = 'red'
+        isValidCanvasSize = false
+    }
+    else {
+        this.style.borderColor = ''
+        isValidCanvasSize = true
+    }
+
+    constraintTexts.forEach(text => {
+        text.style.display = 'block'
+    })
+    this.style.marginBottom = '5%'
+}
+// -onkeyup
+document.querySelector('#canvasSizeInput').onkeyup = function (event) {
+    if (isNaN(this.value) || parseInt(this.value) < 2000 || parseInt(this.value) > 5000) {
+        this.style.borderColor = 'red'
+        isValidCanvasSize = false
+    }
+    else {
+        this.style.borderColor = ''
+        isValidCanvasSize = true
+    }
+    if (event.key === 'Enter') {
+        this.blur()
+    }
+}
+// -onblur
+document.querySelector('#canvasSizeInput').onblur = function() {
+    let constraintTexts = document.querySelectorAll('.canvas-size-constraint-text')
+    constraintTexts.forEach(text => {
+        text.style.display = 'none'
+    })
+
+    if (isValidCanvasSize) {
+        // Update canvas size
+        svg.attr('height', parseInt(this.value))
+        svg.attr('width', parseInt(this.value))
+        enableScroll()
+    }
+    this.style.marginBottom = '15%'
+    this.style.borderColor = ''
+   
+}
 
  // Update pen color
  document.querySelector('#colorPicker').onchange = function() {
@@ -460,7 +581,6 @@
     localStorage.setItem('userSettings', JSON.stringify(userSettings))
 
  }
-
 
  // Run theme transition
  function runThemeTransistion(theme) {
@@ -502,6 +622,48 @@
      startOverBtn.style.animationFillMode = 'forwards'
      
  }
+
+ // Disable scroll
+ function disableScroll() {
+    SCROLL_LOCKED = true
+    let body = document.querySelector('body')
+    let lockScrollBtn = document.querySelector('#lockScrollBtn')
+    let bgColor = JSON.parse(localStorage.getItem('userSettings'))['bgColor']
+
+    body.className = 'stop-scrolling'
+    // For mobile
+    $('body').bind('touchmove', function(e){e.preventDefault()})
+
+    // Change icon
+    if (bgColor === 'white') {
+        lockScrollBtn.src = '/Img/black_lock_icon(lock).svg'
+    }
+    else if (bgColor === 'black') {
+        lockScrollBtn.src = '/Img/white_lock_icon(lock).svg'
+    }
+
+ }
+
+ // Enable scroll
+ function enableScroll() {
+    SCROLL_LOCKED = false
+    let body = document.querySelector('body')
+    let lockScrollBtn = document.querySelector('#lockScrollBtn')
+    let bgColor = JSON.parse(localStorage.getItem('userSettings'))['bgColor']
+
+    body.className = ''
+    // For mobile
+    $('body').unbind('touchmove')
+
+    // Change icon
+    if (bgColor === 'white') {
+        lockScrollBtn.src = '/Img/black_lock_icon(unlock).svg'
+    }
+    else if (bgColor === 'black') {
+        lockScrollBtn.src = '/Img/white_lock_icon(unlock).svg'
+    }
+ }
+
 
  // Cast set to array
  function castSetToArray(set) {
