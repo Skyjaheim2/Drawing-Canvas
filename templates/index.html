@@ -6,7 +6,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'style.css') }}">
+
         <!-- D3 LIBRARY -->
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <!-- JQUERY -->
@@ -17,7 +18,7 @@
         <div class="container-1">
             <div id="mainHeading"></div>
             <!-- SIDE BAR -->
-            <img title="Side Bar" id="hamburgerBtn" src="/Img/Hamburger_icon.svg.png">
+            <img title="Side Bar" id="hamburgerBtn" src="{{ url_for('static', filename = 'Img/Hamburger_icon.svg.png') }}">
             <div class="side-bar-container" data-to_animate="Left">
                 <br>
                 <div id="options">
@@ -40,6 +41,8 @@
                         <option value="red">Red</option>
                         <option value="blue">Blue</option>
                         <option value="green">Green</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="orange">Orange</option>
                     </select>
                     <!-- THICKNESS PICKER - Point -->
                     <label id="thicknessLabel" class="inputLabel">Point Thickness</label>
@@ -63,19 +66,18 @@
                     <!-- ICON CONTAINER -->
                     <div class="icon-btn-container">
                         <!-- ERASER BUTTON -->
-                        <img title="Eraser" id="eraserBtn" src="/Img/black_eraser.svg">
+                        <img title="Eraser" id="eraserBtn" src="{{ url_for('static', filename = 'Img/black_eraser.svg') }}">
                         <!-- LOCK SCROLL BUTTON -->
-                        <img title="Lock Scroll" id="lockScrollBtn" src="/Img/black_lock_icon(unlock).svg">
+                        <img title="Lock Scroll" id="lockScrollBtn" src="{{ url_for('static', filename = 'Img/black_lock_icon(unlock).svg') }}">
                         <!-- MOVE BUTTON -->
-                        <img title="Move" id="moveBtn" src="/Img/move(black).svg">
+                        <img title="Move" id="moveBtn" src="{{ url_for('static', filename = 'Img/move(black).svg') }}">
                         <!-- SELECT BUTTON -->
-                        <img title="Select" id="selectBtn" src="/Img/select-rectangle(black).svg">
+                        <img title="Select" id="selectBtn" src="{{ url_for('static', filename = 'Img/select-rectangle(black).svg') }}">
                     </div>
                 </div>
             </div> 
-            
         </div>
         <svg id="draw"></svg>
     </body>
-    <script src="main.js"></script>
+    <script src="{{ url_for('static', filename = 'main.js') }}"></script>
 </html>

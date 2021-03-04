@@ -164,9 +164,7 @@
                  }
              })
          }
-
      }
-     
  }
 
  // OPEN AND CLOSE SIDE BAR
@@ -211,11 +209,11 @@
 
          // Add eraser circle
          eraserCircle = svg.append('circle')
-                                                .attr('cx', 0)
-                                                .attr('cy', 0)
-                                                .attr('r', document.querySelector('#thicknessPicker-Eraser').value)
-                                                .style('fill', 'grey')
-                                                .style('opacity', 0.5)
+                                        .attr('cx', 0)
+                                        .attr('cy', 0)
+                                        .attr('r', document.querySelector('#thicknessPicker-Eraser').value)
+                                        .style('fill', 'grey')
+                                        .style('opacity', 0.5)
 
         // Start animation
         if (bgColor === 'white')
@@ -356,14 +354,20 @@
          canvasSizeInput.style.color = 'black'
 
          // Change the Button icons
-         hamburgerBtn.src = '/Img/Hamburger_icon.svg.png'
-         eraserBtn.src = '/Img/black_eraser.svg'
-         moveBtn.src = '/Img/move(black).svg'
-         selectBtn.src = '/Img/select-rectangle(black).svg'
+        //  hamburgerBtn.src = '/Img/Hamburger_icon.svg.png'
+
+         hamburgerBtn.src = "static/Img/Hamburger_icon.svg.png"
+
+
+         eraserBtn.src = 'static/Img/black_eraser.svg'
+         moveBtn.src = 'static/Img/move(black).svg'
+         selectBtn.src = 'static/Img/select-rectangle(black).svg'
          if (SCROLL_LOCKED)
-             lockScrollBtn.src = '/Img/black_lock_icon(lock).svg'
+             lockScrollBtn.src = 'static/Img/black_lock_icon(lock).svg'
          else
-             lockScrollBtn.src = '/Img/black_lock_icon(unlock).svg'
+            lockScrollBtn.src = 'static/Img/black_lock_icon(unlock).svg'
+
+
          // Change the color of the pen
          document.querySelector('#blackPen').selected = true
          // Change the selection option
@@ -396,14 +400,18 @@
          canvasSizeInput.style.borderColor = 'grey'
          canvasSizeInput.style.color = 'white'
          // Change button icons
-         hamburgerBtn.src = '/Img/white_hamburger_icon.jpg'
-         eraserBtn.src = '/Img/white_eraser.svg'
-         moveBtn.src = '/Img/move(white).svg'
-         selectBtn.src = '/Img/select-rectangle(white).svg'
+         hamburgerBtn.src = 'static/Img/white_hamburger_icon.jpg'
+
+        //  hamburgerBtn.src = "{{ url_for('static', filename = 'Img/white_hamburger_icon.jpg') }}"
+
+
+         eraserBtn.src = 'static/Img/white_eraser.svg'
+         moveBtn.src = 'static/Img/move(white).svg'
+         selectBtn.src = 'static/Img/select-rectangle(white).svg'
          if (SCROLL_LOCKED)
-             lockScrollBtn.src = '/Img/white_lock_icon(lock).svg'
+             lockScrollBtn.src = 'static/Img/white_lock_icon(lock).svg'
          else
-             lockScrollBtn.src = '/Img/white_lock_icon(unlock).svg'
+             lockScrollBtn.src = 'static/Img/white_lock_icon(unlock).svg'
 
          // Change the color of the pen
          document.querySelector('#whitePen').selected = true
@@ -419,10 +427,18 @@
     let colorPickerIndex = {
         'white': 0,
         'black': 0,
-        'red': 1,
-        'blue': 2,
-        'green': 3,
+        // 'red': 1,
+        // 'blue': 2,
+        // 'green': 3,
+        // 'yellow': 4,
     }
+    // Dynamically add colors from the html select
+    for (let i = 2; i < colorPickerSelect.length; i ++) {
+        let colorOption = colorPickerSelect.options[i].value
+        colorPickerIndex[colorOption] = i - 1
+    }
+    // console.log(colorPickerSelect.options[2])
+    // console.log(colorPickerIndex)
 
     /* 
     If the stored penColor is not black or white then we reload the stored penColor
@@ -636,10 +652,10 @@ document.querySelector('#canvasSizeInput').onblur = function() {
 
     // Change icon
     if (bgColor === 'white') {
-        lockScrollBtn.src = '/Img/black_lock_icon(lock).svg'
+        lockScrollBtn.src = 'static/Img/black_lock_icon(lock).svg'
     }
     else if (bgColor === 'black') {
-        lockScrollBtn.src = '/Img/white_lock_icon(lock).svg'
+        lockScrollBtn.src = 'static/Img/white_lock_icon(lock).svg'
     }
 
  }
@@ -657,10 +673,10 @@ document.querySelector('#canvasSizeInput').onblur = function() {
 
     // Change icon
     if (bgColor === 'white') {
-        lockScrollBtn.src = '/Img/black_lock_icon(unlock).svg'
+        lockScrollBtn.src = 'static/Img/black_lock_icon(unlock).svg'
     }
     else if (bgColor === 'black') {
-        lockScrollBtn.src = '/Img/white_lock_icon(unlock).svg'
+        lockScrollBtn.src = 'static/Img/white_lock_icon(unlock).svg'
     }
  }
 
