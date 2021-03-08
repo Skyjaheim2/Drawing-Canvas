@@ -648,7 +648,7 @@ document.querySelector('#canvasSizeInput').onblur = function() {
 
     body.className = 'stop-scrolling'
     // For mobile
-    $('body').bind('touchmove', function(e){e.preventDefault()})
+    // $('body').bind('touchmove', function(e){e.preventDefault()})
 
     // Change icon
     if (bgColor === 'white') {
@@ -669,7 +669,7 @@ document.querySelector('#canvasSizeInput').onblur = function() {
 
     body.className = ''
     // For mobile
-    $('body').unbind('touchmove')
+    // $('body').unbind('touchmove')
 
     // Change icon
     if (bgColor === 'white') {
