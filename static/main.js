@@ -331,7 +331,7 @@
      let userSettings = JSON.parse(localStorage.getItem('userSettings'))
 
      if (userSettings['bgColor'] === 'white') {
-         runThemeTransistion('lightMode')
+         runThemeTransition('lightMode')
          // Change the colors of the page
          body.style.backgroundColor = 'white'
          mainHeading.style.color = 'black'
@@ -379,7 +379,7 @@
 
      }
      else if (userSettings['bgColor'] === 'black') {
-         runThemeTransistion('darkMode')
+         runThemeTransition('darkMode')
          // Change the colors of the page
          body.style.backgroundColor = 'black'
          mainHeading.style.color = 'white'
@@ -599,7 +599,7 @@ document.querySelector('#canvasSizeInput').onblur = function() {
  }
 
  // Run theme transition
- function runThemeTransistion(theme) {
+ function runThemeTransition(theme) {
      let body = document.querySelector('body')
      let mainHeading = document.querySelector('#mainHeading')
      let sideBarContainer = document.querySelector('.side-bar-container')
